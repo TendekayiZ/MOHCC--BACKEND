@@ -6,15 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentsDto {
+public class RegisterRequest {
     private Long id;
-    private  String firstName;
+    private String firstName;
     private String lastName;
+    private String username;
+    private  String password;
+    private  String confirmPassword;
     private Integer age;
-    private String password;
+    private  String gender;
     private String email;
+    private  String location;
+    private Date dob;
 }
