@@ -4,6 +4,7 @@ import com.example.stndsbackend.dto.RegisterRequest;
 import com.example.stndsbackend.entity.Students;
 
 public class StudentMapper  {
+
     public static RegisterRequest mapToStudentDto(Students students){
         return new RegisterRequest(
                 students.getId(),
@@ -21,6 +22,7 @@ public class StudentMapper  {
     }
 
     public static Students mapToStudents(RegisterRequest registerRequest){
+
         return new Students(
                 registerRequest.getId(),
                 registerRequest.getFirstName(),

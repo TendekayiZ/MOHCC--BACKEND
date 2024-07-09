@@ -9,8 +9,10 @@ import com.example.stndsbackend.mapper.StudentMapper;
 import com.example.stndsbackend.repository.StudentRepository;
 import com.example.stndsbackend.service.StudentService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +25,13 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public RegisterRequest signup(RegisterRequest registerRequest) {
         Students students = StudentMapper.mapToStudents(registerRequest);
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+       String encryptedPwd= bcrypt.encode(students.getPassword());
+       students.setPassword(encryptedPwd);
         Students savedStudents = studentRepository.save(students);
-        return StudentMapper.mapToStudentDto (savedStudents);
-
+        return StudentMapper.mapToStudentDto(savedStudents);
     }
+
 
     @Override
     public RegisterRequest getStudentById(Long studentsId) {
@@ -47,17 +52,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public RegisterRequest updateStudents(Long studentId, RegisterRequest updateStudent) {
-        Students students = studentRepository.findById(studentId).orElseThrow(
-                () -> new ResourceNotFoundException ("Student does not exist with given id" + studentId)
-        );
-        students.setFirstName(updateStudent.getFirstName());
-        students.setLastName(updateStudent.getLastName());
-        students.setAge(updateStudent.getAge());
-        students.setPassword(updateStudent.getPassword());
-        students.setEmail(updateStudent.getEmail());
-
-        Students updatedStudentObj = studentRepository.save(students);
-        return StudentMapper.mapToStudentDto(updatedStudentObj);
+        return null;
+//        Students students = studentRepository.findById(studentId).orElseThrow(
+//                () -> new ResourceNotFoundException ("Student does not exist with given id" + studentId)
+//        );
+//        students.setFirstName(updateStudent.getFirstName());
+//        students.setLastName(updateStudent.getLastName());
+//        students.setAge(updateStudent.getAge());
+//        students.setPassword(updateStudent.getPassword());
+//        students.setEmail(updateStudent.getEmail());
+//
+//        Students updatedStudentObj = studentRepository.save(students);
+//        return StudentMapper.mapToStudentDto(updatedStudentObj);
     }
 
     @Override
@@ -72,11 +78,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         String msg = "";
         Students students = studentRepository.findByUsername(loginRequest.getUsername());
         if (students != null) {
             String password = loginRequest.getPassword();
-            if (password.equals(students.getPassword())) {
+           if (bcrypt.matches(loginRequest.getPassword(), students.getPassword())){
                 Optional<Students> studentsOptional = studentRepository.findByUsernameAndPassword(
                         students.getUsername(), students.getPassword());
                 if (studentsOptional.isPresent()) {

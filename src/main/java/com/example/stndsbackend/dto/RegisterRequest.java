@@ -1,12 +1,11 @@
 package com.example.stndsbackend.dto;
 
 
+import com.example.stndsbackend.entity.Students;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Getter
 @Setter
@@ -17,11 +16,11 @@ public class RegisterRequest {
     private String firstName;
     private String lastName;
     private String username;
-    private  String password;
-    private  String confirmPassword;
+    private String password;
+    private String confirmPassword;
     private Integer age;
-    private  String gender;
+    private String gender;
     private String email;
-    private  String location;
+    private String location;
 
 }
