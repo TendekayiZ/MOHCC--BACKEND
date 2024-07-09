@@ -1,28 +1,37 @@
 package com.example.stndsbackend.mapper;
 
-import com.example.stndsbackend.dto.StudentsDto;
+import com.example.stndsbackend.dto.RegisterRequest;
 import com.example.stndsbackend.entity.Students;
 
 public class StudentMapper  {
-    public static StudentsDto mapToStudentDto(Students students){
-        return new StudentsDto(
+    public static RegisterRequest mapToStudentDto(Students students){
+        return new RegisterRequest(
                 students.getId(),
                 students.getFirstName(),
                 students.getLastName(),
-                students.getAge(),
+                students.getUsername(),
                 students.getPassword(),
-                students.getEmail()
+                students.getConfirmPassword(),
+                students.getAge(),
+                students.getGender(),
+                students.getEmail(),
+                students.getLocation()
+
         );
     }
 
-    public static Students mapToStudents(StudentsDto studentsDto){
+    public static Students mapToStudents(RegisterRequest registerRequest){
         return new Students(
-                studentsDto.getId(),
-                studentsDto.getFirstName(),
-                studentsDto.getLastName(),
-                studentsDto.getAge(),
-                studentsDto.getPassword(),
-                studentsDto.getEmail()
+                registerRequest.getId(),
+                registerRequest.getFirstName(),
+                registerRequest.getLastName(),
+                registerRequest.getUsername(),
+                registerRequest.getPassword(),
+                registerRequest.getConfirmPassword(),
+                registerRequest.getAge(),
+                registerRequest.getGender(),
+                registerRequest.getEmail(),
+                registerRequest.getLocation()
         );
     }
 }

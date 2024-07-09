@@ -23,5 +23,5 @@ public class RegisterRequest {
     private  String gender;
     private String email;
     private  String location;
-    private Date dob;
+
 }
