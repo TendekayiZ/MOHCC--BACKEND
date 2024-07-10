@@ -9,6 +9,7 @@ import com.example.stndsbackend.mapper.StudentMapper;
 import com.example.stndsbackend.repository.StudentRepository;
 import com.example.stndsbackend.service.StudentService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public RegisterRequest signup(RegisterRequest registerRequest) {
         Students students = StudentMapper.mapToStudents(registerRequest);
+        BCryptPasswordEncoder bcrypt=new BCryptPasswordEncoder();
+        String encryptedPwd=bcrypt.encode(students.getPassword());
+        students.setPassword(encryptedPwd);
         Students savedStudents = studentRepository.save(students);
         return StudentMapper.mapToStudentDto (savedStudents);
 
