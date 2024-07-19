@@ -1,7 +1,6 @@
 package com.example.stndsbackend.dto;
 
 
-import com.example.stndsbackend.entity.Students;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

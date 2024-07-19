@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class StudentServiceImpl implements StudentService {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
        String encryptedPwd= bcrypt.encode(students.getPassword());
        students.setPassword(encryptedPwd);
-        Students savedStudents = studentRepository.save(students);
+       Students savedStudents = studentRepository.save(students);
         return StudentMapper.mapToStudentDto(savedStudents);
     }
 
@@ -36,35 +35,19 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public RegisterRequest getStudentById(Long studentsId) {
         return null;
-//        Students students = studentRepository.findById(studentsId)
-//                .orElseThrow(() ->
-//                        new ResourceNotFoundException("Student id does not exist : " + studentsId));
-//        return StudentMapper.mapToStudentDto(students);
     }
 
     @Override
     public List<RegisterRequest> getAllStudents() {
         return null;
-//        List<Students> students = studentRepository.findAll();
-//        return students.stream().map((student) -> StudentMapper.mapToStudentDto(student))
-//                .collect(Collectors.toList());
     }
 
     @Override
     public RegisterRequest updateStudents(Long studentId, RegisterRequest updateStudent) {
         return null;
-//        Students students = studentRepository.findById(studentId).orElseThrow(
-//                () -> new ResourceNotFoundException ("Student does not exist with given id" + studentId)
-//        );
-//        students.setFirstName(updateStudent.getFirstName());
-//        students.setLastName(updateStudent.getLastName());
-//        students.setAge(updateStudent.getAge());
-//        students.setPassword(updateStudent.getPassword());
-//        students.setEmail(updateStudent.getEmail());
-//
-//        Students updatedStudentObj = studentRepository.save(students);
-//        return StudentMapper.mapToStudentDto(updatedStudentObj);
+
     }
+
 
     @Override
     public void deleteStudents(Long studentId) {

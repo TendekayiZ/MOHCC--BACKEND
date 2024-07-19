@@ -5,9 +5,11 @@ import com.example.stndsbackend.LoginResponse;
 import com.example.stndsbackend.dto.LoginRequest;
 import com.example.stndsbackend.dto.RegisterRequest;
 import com.example.stndsbackend.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +24,12 @@ public class StudentsController {
 
     //Build Add Students Rest API
     @PostMapping("/SignUp")
-    public ResponseEntity <RegisterRequest> Signup(@RequestBody RegisterRequest registerRequest){
-         RegisterRequest savedStudents = studentService.signup(registerRequest);
-         return new ResponseEntity<>(savedStudents, HttpStatus.CREATED);
+    public String Signup(@RequestBody @Valid RegisterRequest registerRequest,
+                         BindingResult bindingResult){
+        if (registerRequest.getPassword().equals(registerRequest.getConfirmPassword())){
+         return ("Registration successful");
+        }else
+            return ("Registration failed, Please check your password");
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
