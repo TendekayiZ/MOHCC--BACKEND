@@ -4,6 +4,7 @@ package com.example.stndsbackend.controller;
 import com.example.stndsbackend.LoginResponse;
 import com.example.stndsbackend.dto.LoginRequest;
 import com.example.stndsbackend.dto.RegisterRequest;
+import com.example.stndsbackend.entity.Students;
 import com.example.stndsbackend.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,12 +25,17 @@ public class StudentsController {
 
     //Build Add Students Rest API
     @PostMapping("/SignUp")
-    public String Signup(@RequestBody @Valid RegisterRequest registerRequest,
-                         BindingResult bindingResult){
-        if (registerRequest.getPassword().equals(registerRequest.getConfirmPassword())){
-         return ("Registration successful");
-        }else
-            return ("Registration failed, Please check your password");
+    public String Signup(@RequestBody @Valid RegisterRequest registerRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "Registration failed, please check your input";
+        }
+
+        if (registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
+            RegisterRequest savedStudents = studentService.signup(registerRequest);
+            return "Registration successful";
+        } else {
+            return "Registration failed, please check your password";
+        }
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){

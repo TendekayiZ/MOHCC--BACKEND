@@ -24,13 +24,17 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public RegisterRequest signup(RegisterRequest registerRequest) {
         Students students = StudentMapper.mapToStudents(registerRequest);
+
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-       String encryptedPwd= bcrypt.encode(students.getPassword());
-       students.setPassword(encryptedPwd);
-       Students savedStudents = studentRepository.save(students);
+        String encryptedPassword = bcrypt.encode(students.getPassword());
+        students.setPassword(encryptedPassword);
+
+        String encryptedConfirmPassword = bcrypt.encode(students.getConfirmPassword());
+        students.setConfirmPassword(encryptedConfirmPassword);
+
+        Students savedStudents = studentRepository.save(students);
         return StudentMapper.mapToStudentDto(savedStudents);
     }
-
 
     @Override
     public RegisterRequest getStudentById(Long studentsId) {
