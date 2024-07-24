@@ -8,7 +8,11 @@ import com.example.stndsbackend.exception.ResourceNotFoundException;
 import com.example.stndsbackend.mapper.StudentMapper;
 import com.example.stndsbackend.repository.StudentRepository;
 import com.example.stndsbackend.service.StudentService;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -87,6 +91,27 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
+    @Data
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Entity
+    @Table(name = "STD_table")
+    public static class STDs {
+        @Id
+        @Column(name = "Name")
+        private String stdName;
+        @Column(name = "Nick_name")
+        private String stdNickName;
+        @Column(name = "Description")
+        private String stiDescription;
+        @Column(name = "Incubation_Period")
+        private String incubationPeriod;
+        @Column(name = "Danger")
+        private String danger;
+
+    }
 }
 
 
