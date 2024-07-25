@@ -4,10 +4,13 @@ package com.example.stndsbackend.controller;
 import com.example.stndsbackend.LoginResponse;
 import com.example.stndsbackend.dto.LoginRequest;
 import com.example.stndsbackend.dto.RegisterRequest;
+import com.example.stndsbackend.entity.Students;
 import com.example.stndsbackend.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,15 +18,24 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/students")
+@CrossOrigin(origins = "http://localhost:4200")
 public class StudentsController {
 
     private StudentService studentService;
 
     //Build Add Students Rest API
     @PostMapping("/SignUp")
-    public ResponseEntity <RegisterRequest> Signup(@RequestBody RegisterRequest registerRequest){
-         RegisterRequest savedStudents = studentService.signup(registerRequest);
-         return new ResponseEntity<>(savedStudents, HttpStatus.CREATED);
+    public String Signup(@RequestBody @Valid RegisterRequest registerRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "Registration failed, please check your input";
+        }
+
+        if (registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
+            RegisterRequest savedStudents = studentService.signup(registerRequest);
+            return "Registration successful";
+        } else {
+            return "Registration failed, please check your password";
+        }
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
