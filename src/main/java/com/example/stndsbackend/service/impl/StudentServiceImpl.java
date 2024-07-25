@@ -1,6 +1,7 @@
 package com.example.stndsbackend.service.impl;
 
 import com.example.stndsbackend.LoginResponse;
+import com.example.stndsbackend.dto.ForgotPasswordRequest;
 import com.example.stndsbackend.dto.LoginRequest;
 import com.example.stndsbackend.dto.RegisterRequest;
 import com.example.stndsbackend.entity.Students;
@@ -12,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,8 +99,31 @@ public class StudentServiceImpl implements StudentService {
 
     }
 
+    @Override
+    public ForgotPasswordRequest forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        return null;
+    }
+
+    @Override
+    public void resetPassword(Students students, String newPassword) {
+        students.setPassword(newPassword);
+        studentRepository.save(students);
+}
+
+    @Override
+    public Optional<Students> findByEmail(String email) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void saveStudent(Students students) {
+
+    }
+
 
 }
+
+
 
 
 

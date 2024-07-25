@@ -1,16 +1,14 @@
 package com.example.stndsbackend.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Data
 @Table(name = "student")
 public class Students {
     @Id
@@ -34,4 +32,7 @@ public class Students {
     private String email;
     @Column(name = "location")
     private  String location;
+
+    public Students(String email) {
+    }
 }
