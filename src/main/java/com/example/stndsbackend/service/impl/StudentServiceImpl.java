@@ -9,7 +9,11 @@ import com.example.stndsbackend.exception.ResourceNotFoundException;
 import com.example.stndsbackend.mapper.StudentMapper;
 import com.example.stndsbackend.repository.StudentRepository;
 import com.example.stndsbackend.service.StudentService;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,46 +29,34 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public RegisterRequest signup(RegisterRequest registerRequest) {
         Students students = StudentMapper.mapToStudents(registerRequest);
+
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-       String encryptedPwd= bcrypt.encode(students.getPassword());
-       students.setPassword(encryptedPwd);
+        String encryptedPassword = bcrypt.encode(students.getPassword());
+        students.setPassword(encryptedPassword);
+
+        String encryptedConfirmPassword = bcrypt.encode(students.getConfirmPassword());
+        students.setConfirmPassword(encryptedConfirmPassword);
+
         Students savedStudents = studentRepository.save(students);
         return StudentMapper.mapToStudentDto(savedStudents);
     }
 
-
     @Override
     public RegisterRequest getStudentById(Long studentsId) {
         return null;
-//        Students students = studentRepository.findById(studentsId)
-//                .orElseThrow(() ->
-//                        new ResourceNotFoundException("Student id does not exist : " + studentsId));
-//        return StudentMapper.mapToStudentDto(students);
     }
 
     @Override
     public List<RegisterRequest> getAllStudents() {
         return null;
-//        List<Students> students = studentRepository.findAll();
-//        return students.stream().map((student) -> StudentMapper.mapToStudentDto(student))
-//                .collect(Collectors.toList());
     }
 
     @Override
     public RegisterRequest updateStudents(Long studentId, RegisterRequest updateStudent) {
         return null;
-//        Students students = studentRepository.findById(studentId).orElseThrow(
-//                () -> new ResourceNotFoundException ("Student does not exist with given id" + studentId)
-//        );
-//        students.setFirstName(updateStudent.getFirstName());
-//        students.setLastName(updateStudent.getLastName());
-//        students.setAge(updateStudent.getAge());
-//        students.setPassword(updateStudent.getPassword());
-//        students.setEmail(updateStudent.getEmail());
-//
-//        Students updatedStudentObj = studentRepository.save(students);
-//        return StudentMapper.mapToStudentDto(updatedStudentObj);
+
     }
+
 
     @Override
     public void deleteStudents(Long studentId) {
@@ -121,6 +113,27 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
+    @Data
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Entity
+    @Table(name = "STD_table")
+    public static class STDs {
+        @Id
+        @Column(name = "Name")
+        private String stdName;
+        @Column(name = "Nick_name")
+        private String stdNickName;
+        @Column(name = "Description")
+        private String stiDescription;
+        @Column(name = "Incubation_Period")
+        private String incubationPeriod;
+        @Column(name = "Danger")
+        private String danger;
+
+    }
 }
 
 
