@@ -2,6 +2,7 @@ package com.example.stndsbackend.controller;
 
 
 import com.example.stndsbackend.LoginResponse;
+import com.example.stndsbackend.dto.ForgotPasswordRequest;
 import com.example.stndsbackend.dto.LoginRequest;
 import com.example.stndsbackend.dto.RegisterRequest;
 import com.example.stndsbackend.entity.Students;
@@ -12,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import util.PasswordUtil;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -37,40 +40,57 @@ public class StudentsController {
             return "Registration failed, please check your password";
         }
     }
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         LoginResponse loginResponse = studentService.login(loginRequest);
         return ResponseEntity.ok(loginResponse);
     }
-    //build Get Students
+    //build Get Students    //update Students Rest API
 
     @GetMapping("{id}")
-    public ResponseEntity<RegisterRequest> getStudentsById(@PathVariable("id") Long studentsId){
-       RegisterRequest registerRequest = studentService.getStudentById(studentsId);
-       return ResponseEntity.ok(registerRequest);
+    public ResponseEntity<RegisterRequest> getStudentsById(@PathVariable("id") Long studentsId) {
+        RegisterRequest registerRequest = studentService.getStudentById(studentsId);
+        return ResponseEntity.ok(registerRequest);
     }
-//    build Get all Students
+
+    //    build Get all Students
     @GetMapping
-    public ResponseEntity<List<RegisterRequest>> getAllStudents(){
+    public ResponseEntity<List<RegisterRequest>> getAllStudents() {
         List<RegisterRequest> students = studentService.getAllStudents();
         return ResponseEntity.ok(students);
     }
-    //update Students Rest API
+
     @PutMapping("{id}")
     public ResponseEntity<RegisterRequest> updateStudent(@PathVariable("id") Long studentId,
-                                                         @RequestBody RegisterRequest updatedStudent){
+                                                         @RequestBody RegisterRequest updatedStudent) {
         RegisterRequest registerRequest = studentService.updateStudents(studentId, updatedStudent);
         return ResponseEntity.ok(registerRequest);
     }
 
-//Delete Student restPi
+    //Delete Student restPi
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteStudents(@PathVariable ("id") Long studentId){
+    public ResponseEntity<String> deleteStudents(@PathVariable("id") Long studentId) {
         studentService.deleteStudents(studentId);
         return ResponseEntity.ok("Student Deleted Successfully!");
     }
 
+    // Forgot Password
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        Optional<Students> studentsOptional = studentService.findByEmail(request.getEmail());
+        if (studentsOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No user found with the provided email");
+        } else {
+
+            Students students = studentsOptional.get();
+            String newPassword = PasswordUtil.generateRandomPassword();
+            students.setPassword(newPassword);
+            studentService.saveStudent(students);
+
+            // Send the new password to the students email
+            return ResponseEntity.ok("Password reset instructions have been sent to your email");
+        }
     }
-
-
-
+}
