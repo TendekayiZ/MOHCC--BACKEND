@@ -10,8 +10,7 @@ public class PasswordUtil {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     public static String encryptPassword(String password) {
-        // Implement the password encryption logic here
-        return password; // Placeholder, replace with actual encryption implementation
+        return password; 
     }
 
     public static String generateRandomPassword() {
