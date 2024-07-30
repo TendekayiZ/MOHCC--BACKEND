@@ -1,6 +1,6 @@
 package com.example.stndsbackend.repository;
 
-import com.example.stndsbackend.entity.Students;
+import com.example.stndsbackend.entities.Students;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -7,7 +7,7 @@ import com.example.stndsbackend.entity.Students;
 import com.example.stndsbackend.exception.ResourceNotFoundException;
 import com.example.stndsbackend.mapper.StudentMapper;
 import com.example.stndsbackend.repository.StudentRepository;
-import com.example.stndsbackend.service.StudentService;
+import com.example.stndsbackend.service.authService.AuthService;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class StudentServiceImpl implements StudentService {
+public class AuthServiceImpl implements AuthService {
 
     private StudentRepository studentRepository;
 
