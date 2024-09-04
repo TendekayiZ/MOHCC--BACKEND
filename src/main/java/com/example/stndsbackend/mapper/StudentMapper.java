@@ -1,23 +1,16 @@
 package com.example.stndsbackend.mapper;
 
-import com.example.stndsbackend.dto.ForgotPasswordRequest;
 import com.example.stndsbackend.dto.RegisterRequest;
-import com.example.stndsbackend.entity.Students;
+import com.example.stndsbackend.entities.Students;
 
 public class StudentMapper  {
 
     public static RegisterRequest mapToStudentDto(Students students){
         return new RegisterRequest(
                 students.getId(),
-                students.getFirstName(),
-                students.getLastName(),
                 students.getUsername(),
                 students.getPassword(),
-                students.getConfirmPassword(),
-                students.getAge(),
-                students.getGender(),
-                students.getEmail(),
-                students.getLocation()
+                students.getConfirmPassword()
 
         );
     }
@@ -26,20 +19,9 @@ public class StudentMapper  {
 
         return new Students(
                 registerRequest.getId(),
-                registerRequest.getFirstName(),
-                registerRequest.getLastName(),
                 registerRequest.getUsername(),
                 registerRequest.getPassword(),
-                registerRequest.getConfirmPassword(),
-                registerRequest.getAge(),
-                registerRequest.getGender(),
-                registerRequest.getEmail(),
-                registerRequest.getLocation()
-        );
-    }
-    public static Students mapToStudentsDto(ForgotPasswordRequest forgotPasswordRequest){
-        return new Students(
-                forgotPasswordRequest.getEmail()
+                registerRequest.getConfirmPassword()
         );
     }
 }

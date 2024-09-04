@@ -1,9 +1,13 @@
-package com.example.stndsbackend.stds;
+package com.example.stndsbackend.service.impl;
 
+import com.example.stndsbackend.entities.stds;
+import com.example.stndsbackend.repositories.stdRepository;
+import com.example.stndsbackend.service.StdService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,9 +19,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class stdServiceImpl implements stdService{
+public class stdServiceImpl implements StdService {
+
     @Autowired
     private stdRepository repository;
+
+    Specification<stds> getSpecification(){
+        return(root, query, criteriaBuilder) -> {
+            return criteriaBuilder.equal(root.get("stdName"), "gonorrhoea");
+        };
+
+    }
+    public List<stds> getStdsByName(){
+       Specification<stds> specification = getSpecification();
+       return repository.findAll(specification);
+    }
 
     @Override
     public boolean hasCsvFormat(MultipartFile file) {
@@ -42,8 +58,8 @@ public class stdServiceImpl implements stdService{
 
     }
 
-
-    private List<stds> csvToStds(InputStream inputStream) {
+    @Override
+    public List<stds> csvToStds(InputStream inputStream) {
         List<stds> stds = new ArrayList<>();
 
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
@@ -64,4 +80,5 @@ public class stdServiceImpl implements stdService{
 
         return stds;
     }
+
 }

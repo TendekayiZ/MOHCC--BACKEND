@@ -1,4 +1,4 @@
-package com.example.stndsbackend.entity;
+package com.example.stndsbackend.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

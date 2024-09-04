@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 import java.security.SecureRandom;
 
 public class PasswordUtil {
-    private static final String CHARACTERS = "ABCDEFGH1JKLMNOPRSTUVWXYZ0123456789abcdefghij";
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPRSTUVWXYZ0123456789abcdefghij";
     private static final int PASSWORD_LENGTH = 10;
     private static final SecureRandom RANDOM = new SecureRandom();
 
