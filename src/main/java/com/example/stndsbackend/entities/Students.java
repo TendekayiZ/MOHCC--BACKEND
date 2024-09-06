@@ -20,10 +20,10 @@ public class Students {
     @Column(name = "User_name", nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(name = "password", nullable = false, length = 50)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "confirm_password", nullable = false, length = 50)
+    @Column(name = "confirm_password", nullable = false)
     private String confirmPassword;
 
 

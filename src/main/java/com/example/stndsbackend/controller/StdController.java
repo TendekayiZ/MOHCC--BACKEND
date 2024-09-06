@@ -34,8 +34,8 @@ public class StdController {
 
 
         @PostMapping("/getBySymptom")
-        public ResponseEntity<StdResponse> findBySymptoms(@RequestBody StdRequest stdRequest) {
-            StdResponse stdResponse = stdService.findBySymptoms(stdRequest);
+        public ResponseEntity<StdResponse> findBySymptomsIgnoreCase(@RequestBody StdRequest stdRequest) {
+            StdResponse stdResponse = stdService.findBySymptomsIgnoreCase(stdRequest);
             return ResponseEntity.ok(stdResponse);
         }
 
@@ -43,7 +43,7 @@ public class StdController {
 
     @PostMapping("/find")
     public StdResponse findStdBySymptoms(@RequestBody StdRequest stdRequest) {
-        return stdService.getStdBySymptoms(stdRequest); // Correct usage
+        return stdService.getStdBySymptomsIgnoreCase(stdRequest); // Correct usage
     }
 }
 

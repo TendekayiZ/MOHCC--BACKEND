@@ -68,15 +68,15 @@ public class stdServiceImpl implements StdService {
     }
 
     @Override
-    public StdResponse findBySymptoms(StdRequest stdRequest) {
+    public StdResponse findBySymptomsIgnoreCase(StdRequest stdRequest) {
         // This method is currently unimplemented. Consider implementing or removing it.
         return null;
     }
 
     @Override
-    public StdResponse getStdBySymptoms(StdRequest stdRequest) {
+    public StdResponse getStdBySymptomsIgnoreCase(StdRequest stdRequest) {
         String symptoms = stdRequest.getSymptoms();
-        Optional<Stds> stdsOptional = stdRepository.findBySymptoms(symptoms);
+        Optional<Stds> stdsOptional = stdRepository.findBySymptomsIgnoreCase(symptoms);
 
         if (stdsOptional.isPresent()) {
             Stds stds = stdsOptional.get();
@@ -88,9 +88,9 @@ public class stdServiceImpl implements StdService {
     }
 
     @Override
-    public Optional<Stds> getStdBySymptoms(String symptoms) {
+    public Optional<Stds> getStdBySymptomsIgnoreCase(String symptoms) {
         // This method may be redundant as it's similar to the above method
-        return stdRepository.findBySymptoms(symptoms);
+        return stdRepository.findBySymptomsIgnoreCase(symptoms);
     }
 }
 

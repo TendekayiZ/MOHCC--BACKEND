@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface stdRepository extends JpaRepository<Stds, String>, JpaSpecificationExecutor<Stds> {
 
-    Optional<Stds> findBySymptoms(String symptoms);
+    Optional<Stds> findBySymptomsIgnoreCase(String symptoms);
 }
+

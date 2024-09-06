@@ -14,9 +14,9 @@ public interface StdService {
     void processAndSaveData(MultipartFile file);
     List<Stds> csvToStds(InputStream inputStream);
 
-    StdResponse findBySymptoms(StdRequest stdRequest);
+    StdResponse findBySymptomsIgnoreCase(StdRequest stdRequest);
 
-    Optional<Stds> getStdBySymptoms(String symptoms);
+    Optional<Stds> getStdBySymptomsIgnoreCase(String symptoms);
 
-    StdResponse getStdBySymptoms(StdRequest stdRequest);
+    StdResponse getStdBySymptomsIgnoreCase(StdRequest stdRequest);
 }
