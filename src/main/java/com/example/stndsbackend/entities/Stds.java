@@ -13,11 +13,14 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "Stds_table")
-public class stds {
+public class Stds {
     @Id
     @Column(name = "Name")
-    private String stdName;
+    private String name;
     @Column(name = "Symptoms")
-    public String symptoms;
+    private String symptoms;
 
+
+    public Stds(String stdName) {
+    }
 }

@@ -1,13 +1,14 @@
 package com.example.stndsbackend.service.impl;
 
-import com.example.stndsbackend.entities.stds;
+import com.example.stndsbackend.dto.StdRequest;
+import com.example.stndsbackend.entities.Stds;
 import com.example.stndsbackend.repositories.stdRepository;
+import com.example.stndsbackend.response.StdResponse;
 import com.example.stndsbackend.service.StdService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,70 +16,81 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class stdServiceImpl implements StdService {
 
     @Autowired
-    private stdRepository repository;
-
-    Specification<stds> getSpecification(){
-        return(root, query, criteriaBuilder) -> {
-            return criteriaBuilder.equal(root.get("stdName"), "gonorrhoea");
-        };
-
-    }
-    public List<stds> getStdsByName(){
-       Specification<stds> specification = getSpecification();
-       return repository.findAll(specification);
-    }
+    private stdRepository stdRepository;
 
     @Override
     public boolean hasCsvFormat(MultipartFile file) {
         String type = "text/csv";
-        if (!type.equals(file.getContentType()))
-            return false;
-        return true;
+        return type.equals(file.getContentType());
     }
 
     @Override
     public void processAndSaveData(MultipartFile file) {
         try {
-
-
-            List<stds> stds = csvToStds(file.getInputStream());
-    repository.saveAll(stds);
+            // Convert CSV file to a list of Stds objects
+            List<Stds> stds = csvToStds(file.getInputStream());
+            stdRepository.saveAll(stds); // Save the list of Stds
         } catch (IOException e) {
-            e.printStackTrace();
-
+            // Log the error instead of printing the stack trace
+            System.err.println("Error processing the CSV file: " + e.getMessage());
         }
-
-
     }
 
     @Override
-    public List<stds> csvToStds(InputStream inputStream) {
-        List<stds> stds = new ArrayList<>();
+    public List<Stds> csvToStds(InputStream inputStream) {
+        List<Stds> stdsList = new ArrayList<>();
 
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.Builder.create()
-                     .build().withFirstRecordAsHeader()
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader()
                      .withIgnoreHeaderCase()
                      .withTrim())) {
+
             for (CSVRecord csvRecord : csvParser) {
-                stds std = new stds(
+                Stds std = new Stds(
                         csvRecord.get("StdName"),
                         csvRecord.get("Symptoms"));
-                stds.add(std);
+                stdsList.add(std); // Add std to the list
             }
-            return stds;
+            return stdsList; // Return the populated list
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Consider using a logging framework for production
         }
-
-        return stds;
+        return stdsList; // Return the list even in case of an exception
     }
 
+    @Override
+    public StdResponse findBySymptoms(StdRequest stdRequest) {
+        // This method is currently unimplemented. Consider implementing or removing it.
+        return null;
+    }
+
+    @Override
+    public StdResponse getStdBySymptoms(StdRequest stdRequest) {
+        String symptoms = stdRequest.getSymptoms();
+        Optional<Stds> stdsOptional = stdRepository.findBySymptoms(symptoms);
+
+        if (stdsOptional.isPresent()) {
+            Stds stds = stdsOptional.get();
+            return new StdResponse("According to the symptoms to selected: " + stds.getSymptoms() +
+                    ". We are suspecting its  : " + stds.getName(), true);
+        } else {
+            return new StdResponse("Sorry, please select again", false);
+        }
+    }
+
+    @Override
+    public Optional<Stds> getStdBySymptoms(String symptoms) {
+        // This method may be redundant as it's similar to the above method
+        return stdRepository.findBySymptoms(symptoms);
+    }
 }
+
