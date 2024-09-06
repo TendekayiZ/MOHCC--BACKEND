@@ -17,13 +17,13 @@ public class Students {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "User_name")
+    @Column(name = "User_name", nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false, length = 50)
     private String password;
 
-    @Column(name = "confirm_password")
+    @Column(name = "confirm_password", nullable = false, length = 50)
     private String confirmPassword;
 
 
