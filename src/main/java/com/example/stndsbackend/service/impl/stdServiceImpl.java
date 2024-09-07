@@ -1,9 +1,7 @@
 package com.example.stndsbackend.service.impl;
 
-import com.example.stndsbackend.dto.StdRequest;
 import com.example.stndsbackend.entities.Stds;
 import com.example.stndsbackend.repositories.stdRepository;
-import com.example.stndsbackend.response.StdResponse;
 import com.example.stndsbackend.service.StdService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -18,8 +16,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class stdServiceImpl implements StdService {
@@ -36,11 +35,11 @@ public class stdServiceImpl implements StdService {
     @Override
     public void processAndSaveData(MultipartFile file) {
         try {
-            // Convert CSV file to a list of Stds objects
+
             List<Stds> stds = csvToStds(file.getInputStream());
             stdRepository.saveAll(stds); // Save the list of Stds
         } catch (IOException e) {
-            // Log the error instead of printing the stack trace
+
             System.err.println("Error processing the CSV file: " + e.getMessage());
         }
     }
@@ -58,39 +57,41 @@ public class stdServiceImpl implements StdService {
                 Stds std = new Stds(
                         csvRecord.get("StdName"),
                         csvRecord.get("Symptoms"));
-                stdsList.add(std); // Add std to the list
+                stdsList.add(std);
             }
-            return stdsList; // Return the populated list
+            return stdsList;
         } catch (IOException e) {
-            e.printStackTrace(); // Consider using a logging framework for production
+            e.printStackTrace();
         }
-        return stdsList; // Return the list even in case of an exception
+        return stdsList;
     }
 
-    @Override
-    public StdResponse findBySymptomsIgnoreCase(StdRequest stdRequest) {
-        // This method is currently unimplemented. Consider implementing or removing it.
-        return null;
-    }
 
     @Override
-    public StdResponse getStdBySymptomsIgnoreCase(StdRequest stdRequest) {
-        String symptoms = stdRequest.getSymptoms();
-        Optional<Stds> stdsOptional = stdRepository.findBySymptomsIgnoreCase(symptoms);
-
-        if (stdsOptional.isPresent()) {
-            Stds stds = stdsOptional.get();
-            return new StdResponse("According to the symptoms to selected: " + stds.getSymptoms() +
-                    ". We are suspecting its  : " + stds.getName(), true);
-        } else {
-            return new StdResponse("Sorry, please select again", false);
+    public List<Stds> findStdsBySymptoms(List<String> symptoms) {
+        // Ensure at least two symptoms are provided
+        if (symptoms.size() < 2) {
+            throw new IllegalArgumentException("At least two symptoms must be provided.");
         }
-    }
 
-    @Override
-    public Optional<Stds> getStdBySymptomsIgnoreCase(String symptoms) {
-        // This method may be redundant as it's similar to the above method
-        return stdRepository.findBySymptomsIgnoreCase(symptoms);
-    }
-}
+        Set<Stds> stdSet = new HashSet<>();
+
+        for (String symptom : symptoms) {
+            List<Stds> stdsList = stdRepository.findBySymptom(symptom);
+            for (Stds std : stdsList) {
+                List<String> stdSymptoms = std.getSymptomsList();
+                // Check if the stdSymptoms contain at least two of the provided symptoms
+                long count = stdSymptoms.stream()
+                        .filter(symptoms::contains)
+                        .count();
+
+                if (count >= 2) {
+                    stdSet.add(std); // Add to the set if there are at least two matching symptoms
+                }
+            }
+        }
+
+        return new ArrayList<>(stdSet);
+    }}
+
 
