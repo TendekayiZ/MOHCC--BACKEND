@@ -37,7 +37,7 @@ public class stdServiceImpl implements StdService {
         try {
 
             List<Stds> stds = csvToStds(file.getInputStream());
-            stdRepository.saveAll(stds); // Save the list of Stds
+            stdRepository.saveAll(stds);
         } catch (IOException e) {
 
             System.err.println("Error processing the CSV file: " + e.getMessage());
@@ -55,7 +55,7 @@ public class stdServiceImpl implements StdService {
 
             for (CSVRecord csvRecord : csvParser) {
                 Stds std = new Stds(
-                        csvRecord.get("StdName"),
+                        csvRecord.get("Name"),
                         csvRecord.get("Symptoms"));
                 stdsList.add(std);
             }
@@ -69,7 +69,6 @@ public class stdServiceImpl implements StdService {
 
     @Override
     public List<Stds> findStdsBySymptoms(List<String> symptoms) {
-        // Ensure at least two symptoms are provided
         if (symptoms.size() < 2) {
             throw new IllegalArgumentException("At least two symptoms must be provided.");
         }
@@ -80,18 +79,19 @@ public class stdServiceImpl implements StdService {
             List<Stds> stdsList = stdRepository.findBySymptom(symptom);
             for (Stds std : stdsList) {
                 List<String> stdSymptoms = std.getSymptomsList();
-                // Check if the stdSymptoms contain at least two of the provided symptoms
                 long count = stdSymptoms.stream()
                         .filter(symptoms::contains)
                         .count();
 
                 if (count >= 2) {
-                    stdSet.add(std); // Add to the set if there are at least two matching symptoms
+                    stdSet.add(std);
                 }
             }
         }
 
         return new ArrayList<>(stdSet);
-    }}
+        }
+
+     }
 
 

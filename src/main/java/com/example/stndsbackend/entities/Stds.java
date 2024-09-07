@@ -29,6 +29,5 @@ public class Stds {
     }
 
 
-    public Stds(String stdName) {
-    }
+
 }

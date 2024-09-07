@@ -16,11 +16,7 @@ public interface stdRepository extends JpaRepository<Stds, String> {
     List<Stds> findBySymptom(@Param("symptom") String symptom);
 
 }
-//public interface stdRepository extends JpaRepository<Stds, String>, JpaSpecificationExecutor<Stds> {
-//
-//    @Query("SELECT s FROM Stds s WHERE s.symptoms IN :symptoms GROUP BY s HAVING COUNT(s.symptoms) >= 2")
-//    List<Stds> findBySymptomsIn(@Param("symptoms") List<String> symptoms);
-//}
+
 
 
 
