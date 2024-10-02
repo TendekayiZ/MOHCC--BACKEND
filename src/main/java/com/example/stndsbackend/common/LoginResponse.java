@@ -1,4 +1,4 @@
-package com.example.stndsbackend;
+package com.example.stndsbackend.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

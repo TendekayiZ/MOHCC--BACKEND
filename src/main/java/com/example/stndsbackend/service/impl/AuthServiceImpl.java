@@ -1,9 +1,10 @@
 package com.example.stndsbackend.service.impl;
 
-import com.example.stndsbackend.LoginResponse;
-import com.example.stndsbackend.dto.LoginRequest;
-import com.example.stndsbackend.dto.RegisterRequest;
-import com.example.stndsbackend.entities.Students;
+import com.example.stndsbackend.common.LoginResponse;
+import com.example.stndsbackend.common.SignUpResponse;
+import com.example.stndsbackend.dto.LoginDTO;
+import com.example.stndsbackend.dto.RegisterDTO;
+import com.example.stndsbackend.entities.Student;
 import com.example.stndsbackend.mapper.StudentMapper;
 import com.example.stndsbackend.repositories.StudentRepository;
 import com.example.stndsbackend.service.authService.AuthService;
@@ -20,32 +21,40 @@ public class AuthServiceImpl implements AuthService {
     private StudentRepository studentRepository;
 
     @Override
-    public RegisterRequest signup(RegisterRequest registerRequest) {
+    public SignUpResponse signup(RegisterDTO registerDTO) {
+        Student existingStudent = studentRepository.findByUsername(registerDTO.getUsername());
+        if (existingStudent != null) {
+            return new SignUpResponse("User already exists", false);
+        }
 
-        Students students = StudentMapper.mapToStudents(registerRequest);
+        if (!registerDTO.getPassword().equals(registerDTO.getConfirmPassword())) {
+            return new SignUpResponse("Passwords do not match", false);
+        }
 
+        Student student = StudentMapper.mapToStudents(registerDTO);
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedPassword = bcrypt.encode(registerRequest.getPassword());
-        students.setPassword(encryptedPassword);
-
-        String encryptedConfirmPassword = bcrypt.encode(registerRequest.getConfirmPassword());
-        students.setConfirmPassword(encryptedConfirmPassword);
-
-        Students savedStudents = studentRepository.save(students);
-        return StudentMapper.mapToStudentDto(savedStudents);
+        String encryptedPassword = bcrypt.encode(registerDTO.getPassword());
+        student.setPassword(encryptedPassword);
+        studentRepository.save(student);
+        return new SignUpResponse("Registration successful", true);
     }
 
 
+
+
+
+
+
     @Override
-    public LoginResponse login(LoginRequest loginRequest) {
+    public LoginResponse login(LoginDTO loginDTO) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         String msg = "";
-        Students students = studentRepository.findByUsername(loginRequest.getUsername());
-        if (students != null) {
-            String password = loginRequest.getPassword();
-            if (bcrypt.matches(loginRequest.getPassword(), students.getPassword())) {
-                Optional<Students> studentsOptional = studentRepository.findByUsernameAndPassword(
-                        students.getUsername(), students.getPassword());
+        Student student = studentRepository.findByUsername(loginDTO.getUsername());
+        if (student != null) {
+            String password = loginDTO.getPassword();
+            if (bcrypt.matches(loginDTO.getPassword(), student.getPassword())) {
+                Optional<Student> studentsOptional = studentRepository.findByUsernameAndPassword(
+                        student.getUsername(), student.getPassword());
                 if (studentsOptional.isPresent()) {
                     return new LoginResponse("Login Success", true);
                 } else {
@@ -63,6 +72,7 @@ public class AuthServiceImpl implements AuthService {
 
 
 }
+
 
 
 

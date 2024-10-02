@@ -1,7 +1,8 @@
 package com.example.stndsbackend.service.impl;
 
-import com.example.stndsbackend.entities.Stds;
-import com.example.stndsbackend.repositories.stdRepository;
+import com.example.stndsbackend.entities.Std;
+import com.example.stndsbackend.repositories.StdRepository;
+import com.example.stndsbackend.response.StdResponse;
 import com.example.stndsbackend.service.StdService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -21,10 +22,10 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class stdServiceImpl implements StdService {
+public class StdServiceImpl implements StdService {
 
     @Autowired
-    private stdRepository stdRepository;
+    private StdRepository stdRepository;
 
     @Override
     public boolean hasCsvFormat(MultipartFile file) {
@@ -36,7 +37,7 @@ public class stdServiceImpl implements StdService {
     public void processAndSaveData(MultipartFile file) {
         try {
 
-            List<Stds> stds = csvToStds(file.getInputStream());
+            List<Std> stds = csvToStds(file.getInputStream());
             stdRepository.saveAll(stds);
         } catch (IOException e) {
 
@@ -45,8 +46,8 @@ public class stdServiceImpl implements StdService {
     }
 
     @Override
-    public List<Stds> csvToStds(InputStream inputStream) {
-        List<Stds> stdsList = new ArrayList<>();
+    public List<Std> csvToStds(InputStream inputStream) {
+        List<Std> stdList = new ArrayList<>();
 
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader()
@@ -54,30 +55,30 @@ public class stdServiceImpl implements StdService {
                      .withTrim())) {
 
             for (CSVRecord csvRecord : csvParser) {
-                Stds std = new Stds(
+                Std std = new Std(
                         csvRecord.get("Name"),
                         csvRecord.get("Symptoms"));
-                stdsList.add(std);
+                stdList.add(std);
             }
-            return stdsList;
+            return stdList;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return stdsList;
+        return stdList;
     }
 
 
     @Override
-    public List<Stds> findStdsBySymptoms(List<String> symptoms) {
+    public List<StdResponse> findStdsBySymptoms(List<String> symptoms) {
         if (symptoms.size() < 2) {
             throw new IllegalArgumentException("At least two symptoms must be provided.");
         }
 
-        Set<Stds> stdSet = new HashSet<>();
+        Set<Std> stdSet = new HashSet<>();
 
         for (String symptom : symptoms) {
-            List<Stds> stdsList = stdRepository.findBySymptom(symptom);
-            for (Stds std : stdsList) {
+            List<Std> stdList = stdRepository.findBySymptom(symptom);
+            for (Std std : stdList) {
                 List<String> stdSymptoms = std.getSymptomsList();
                 long count = stdSymptoms.stream()
                         .filter(symptoms::contains)
@@ -89,8 +90,14 @@ public class stdServiceImpl implements StdService {
             }
         }
 
-        return new ArrayList<>(stdSet);
+        // Transform the Set<Stds> to List<StiResponse>
+        List<StdResponse> responseList = new ArrayList<>();
+        for (Std std : stdSet) {
+            responseList.add(new StdResponse(std.getName(), String.join(",", std.getSymptomsList())));
         }
+
+        return responseList;
+    }
 
      }
 

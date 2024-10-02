@@ -1,8 +1,8 @@
 package com.example.stndsbackend.controller;
 
 
-import com.example.stndsbackend.entities.Stds;
 import com.example.stndsbackend.response.ResponseMessage;
+import com.example.stndsbackend.response.StdResponse;
 import com.example.stndsbackend.service.StdService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +35,51 @@ public class StdController {
     @PostMapping("/find")
     public ResponseEntity<?> findStdsByMultipleSymptoms(@RequestBody List<String> symptoms) {
         try {
-            List<Stds> stdsList = stdService.findStdsBySymptoms(symptoms);
-            if (stdsList.isEmpty()) {
+            // Change the type to List<StiResponse>
+            List<StdResponse> stiResponses = stdService.findStdsBySymptoms(symptoms);
+            if (stiResponses.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("No STIs found for the provided symptoms.");
             }
-            return ResponseEntity.ok(stdsList);
+            return ResponseEntity.ok(stiResponses); // Return the list of StiResponse
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

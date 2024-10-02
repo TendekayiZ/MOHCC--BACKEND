@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "Stds")
-public class Stds {
+public class Std {
     @Id
     @Column(name = "Name")
     private String name;
