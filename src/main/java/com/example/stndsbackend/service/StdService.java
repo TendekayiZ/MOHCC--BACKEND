@@ -1,7 +1,7 @@
 package com.example.stndsbackend.service;
 
 import com.example.stndsbackend.entities.Std;
-import com.example.stndsbackend.response.StdResponse;
+import com.example.stndsbackend.common.response.StdResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;

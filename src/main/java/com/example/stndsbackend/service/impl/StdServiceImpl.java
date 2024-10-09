@@ -2,7 +2,7 @@ package com.example.stndsbackend.service.impl;
 
 import com.example.stndsbackend.entities.Std;
 import com.example.stndsbackend.repositories.StdRepository;
-import com.example.stndsbackend.response.StdResponse;
+import com.example.stndsbackend.common.response.StdResponse;
 import com.example.stndsbackend.service.StdService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;

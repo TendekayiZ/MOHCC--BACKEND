@@ -1,4 +1,4 @@
-package com.example.stndsbackend.dto;
+package com.example.stndsbackend.common.dto;
 
 import lombok.*;
 

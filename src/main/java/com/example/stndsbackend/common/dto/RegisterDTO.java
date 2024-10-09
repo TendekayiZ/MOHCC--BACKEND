@@ -1,4 +1,4 @@
-package com.example.stndsbackend.dto;
+package com.example.stndsbackend.common.dto;
 
 
 import jakarta.validation.constraints.NotEmpty;
@@ -14,7 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RegisterDTO {
     private Long id;
-
     @NotEmpty(message = "username must not be empty")
     @Size(min = 4, max = 20)
     private String username;

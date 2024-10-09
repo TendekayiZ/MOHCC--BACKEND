@@ -1,8 +1,8 @@
 package com.example.stndsbackend.controller;
 
 
-import com.example.stndsbackend.response.ResponseMessage;
-import com.example.stndsbackend.response.StdResponse;
+import com.example.stndsbackend.common.response.ResponseMessage;
+import com.example.stndsbackend.common.response.StdResponse;
 import com.example.stndsbackend.service.StdService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

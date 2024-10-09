@@ -1,4 +1,4 @@
-package util;
+package com.example.stndsbackend.common.util;
 
 import java.security.SecureRandom;
 
