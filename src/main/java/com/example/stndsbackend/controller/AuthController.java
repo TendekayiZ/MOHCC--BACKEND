@@ -3,11 +3,13 @@ package com.example.stndsbackend.controller;
 
 import com.example.stndsbackend.common.LoginResponse;
 import com.example.stndsbackend.common.SignUpResponse;
+import com.example.stndsbackend.dto.ChangePasswordDTO;
 import com.example.stndsbackend.dto.LoginDTO;
 import com.example.stndsbackend.dto.RegisterDTO;
 import com.example.stndsbackend.service.authService.AuthService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,13 @@ public class AuthController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @PostMapping("/change-password")
+    public String changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        boolean isChanged = authService.changePassword(changePasswordDTO);
+        return isChanged ? "Password changed successfully!" : "Failed to change password: Invalid credentials or new password mismatch!";
     }
+}
+
 
 
 

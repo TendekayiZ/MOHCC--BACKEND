@@ -2,6 +2,7 @@ package com.example.stndsbackend.service.impl;
 
 import com.example.stndsbackend.common.LoginResponse;
 import com.example.stndsbackend.common.SignUpResponse;
+import com.example.stndsbackend.dto.ChangePasswordDTO;
 import com.example.stndsbackend.dto.LoginDTO;
 import com.example.stndsbackend.dto.RegisterDTO;
 import com.example.stndsbackend.entities.Student;
@@ -9,6 +10,7 @@ import com.example.stndsbackend.mapper.StudentMapper;
 import com.example.stndsbackend.repositories.StudentRepository;
 import com.example.stndsbackend.service.authService.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,10 +70,34 @@ public class AuthServiceImpl implements AuthService {
 
 
     }
-
-
-
+@Override
+public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
+    Student student = studentRepository.findByUsername(changePasswordDTO.getUsername());
+    BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+    if (student == null) {
+        return false;
+    }
+    if (!bcrypt.matches(changePasswordDTO.getOldPassword(), student.getPassword())) {
+        return false;
+    }
+    if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmNewPassword())) {
+        return false;
+    }
+    String encodedNewPassword = bcrypt.encode(changePasswordDTO.getNewPassword());
+    student.setPassword(encodedNewPassword);
+    studentRepository.save(student);
+    System.out.println("Password changed for user: " + student.getUsername());
+    return true;
 }
+
+//        @Override
+//        public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
+//            return false;
+//        }
+    }
+
+
+
 
 
 
