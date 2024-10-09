@@ -1,6 +1,6 @@
 package com.example.stndsbackend.mapper;
 
-import com.example.stndsbackend.dto.RegisterDTO;
+import com.example.stndsbackend.common.dto.RegisterDTO;
 import com.example.stndsbackend.entities.Student;
 
 public class StudentMapper  {

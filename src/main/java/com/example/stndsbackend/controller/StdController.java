@@ -1,10 +1,8 @@
 package com.example.stndsbackend.controller;
 
 
-import com.example.stndsbackend.common.response.ResponseData;
-import com.example.stndsbackend.entities.Std;
-import com.example.stndsbackend.response.ResponseMessage;
-import com.example.stndsbackend.response.StdResponse;
+import com.example.stndsbackend.common.response.ResponseMessage;
+import com.example.stndsbackend.common.response.StdResponse;
 import com.example.stndsbackend.service.StdService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +45,6 @@ public class StdController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
-
-
-    @GetMapping("/get-all")
-    public ResponseData<List<Std>> getAllStds(){
-        return stdService.getAllStds();
     }
 }
 

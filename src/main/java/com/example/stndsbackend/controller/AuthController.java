@@ -1,17 +1,15 @@
 package com.example.stndsbackend.controller;
 
 
-import com.example.stndsbackend.common.LoginResponse;
-import com.example.stndsbackend.common.SignUpResponse;
-import com.example.stndsbackend.dto.ChangePasswordDTO;
-import com.example.stndsbackend.dto.LoginDTO;
-import com.example.stndsbackend.dto.RegisterDTO;
+import com.example.stndsbackend.common.dto.ChangePasswordDTO;
+import com.example.stndsbackend.common.response.LoginResponse;
+import com.example.stndsbackend.common.response.SignUpResponse;
+import com.example.stndsbackend.common.dto.LoginDTO;
+import com.example.stndsbackend.common.dto.RegisterDTO;
 import com.example.stndsbackend.service.authService.AuthService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor

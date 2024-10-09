@@ -1,16 +1,15 @@
 package com.example.stndsbackend.service.impl;
 
-import com.example.stndsbackend.common.LoginResponse;
-import com.example.stndsbackend.common.SignUpResponse;
-import com.example.stndsbackend.dto.ChangePasswordDTO;
-import com.example.stndsbackend.dto.LoginDTO;
-import com.example.stndsbackend.dto.RegisterDTO;
+import com.example.stndsbackend.common.response.LoginResponse;
+import com.example.stndsbackend.common.response.SignUpResponse;
+import com.example.stndsbackend.common.dto.ChangePasswordDTO;
+import com.example.stndsbackend.common.dto.LoginDTO;
+import com.example.stndsbackend.common.dto.RegisterDTO;
 import com.example.stndsbackend.entities.Student;
 import com.example.stndsbackend.mapper.StudentMapper;
 import com.example.stndsbackend.repositories.StudentRepository;
 import com.example.stndsbackend.service.authService.AuthService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
