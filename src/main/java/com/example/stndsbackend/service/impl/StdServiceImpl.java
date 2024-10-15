@@ -1,5 +1,6 @@
 package com.example.stndsbackend.service.impl;
 
+import com.example.stndsbackend.common.response.ResponseData;
 import com.example.stndsbackend.entities.Std;
 import com.example.stndsbackend.repositories.StdRepository;
 import com.example.stndsbackend.response.StdResponse;
@@ -99,6 +100,16 @@ public class StdServiceImpl implements StdService {
         return responseList;
     }
 
-     }
+    @Override
+    public ResponseData<List<Std>> getAllStds() {
+        List<Std> all = stdRepository.findAll();
+
+        if (all.isEmpty()){
+            return new ResponseData<List<Std>>().buildFailedResponse("No Stds");
+        }
+        return new ResponseData<List<Std>>().buildSuccessResponse("Stds found ", all);
+    }
+
+}
 
 
