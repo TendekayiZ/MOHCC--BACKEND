@@ -88,15 +88,7 @@ public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
     System.out.println("Password changed for user: " + student.getUsername());
     return true;
 }
-    }
 
-
-
-
-//        @Override
-//        public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
-//            return false;
-//        }
     }
 
 
