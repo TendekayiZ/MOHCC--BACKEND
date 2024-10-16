@@ -1117,3 +1117,4 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'F
 2024-10-16T11:07:35.897+02:00  INFO 13819 --- [StudentClinic] [RMI TCP Connection(1)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2024-10-16T11:07:35.898+02:00  INFO 13819 --- [StudentClinic] [RMI TCP Connection(1)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2024-10-16T11:07:35.902+02:00  INFO 13819 --- [StudentClinic] [RMI TCP Connection(1)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2024-10-16T11:09:20.261+02:00  INFO 13819 --- [StudentClinic] [http-nio-8080-exec-7] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 336 ms
