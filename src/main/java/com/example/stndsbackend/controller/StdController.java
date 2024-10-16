@@ -1,6 +1,7 @@
 package com.example.stndsbackend.controller;
 
 
+import com.example.stndsbackend.common.response.ResponseData;
 import com.example.stndsbackend.common.response.ResponseMessage;
 import com.example.stndsbackend.common.response.StdResponse;
 import com.example.stndsbackend.service.StdService;
@@ -19,35 +20,25 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class StdController {
 
-    @Autowired
-    private StdService stdService;
-
-    @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
-        if (stdService.hasCsvFormat(file)) {
-            stdService.processAndSaveData(file);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Successfully uploaded file" + file.getOriginalFilename()));
-        }
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage("File format not supported"));
-    }
-
+    private final StdService stdService;
 
     @PostMapping("/find")
-    public ResponseEntity<?> findStdsByMultipleSymptoms(@RequestBody List<String> symptoms) {
+    public ResponseEntity<ResponseData<List<StdResponse>>> findStdsByMultipleSymptoms(@RequestBody List<String> symptoms) {
+        ResponseData<List<StdResponse>> response = new ResponseData<List<StdResponse>>();
         try {
-            // Change the type to List<StiResponse>
             List<StdResponse> stiResponses = stdService.findStdsBySymptoms(symptoms);
             if (stiResponses.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No STIs found for the provided symptoms.");
+                response.buildFailedResponse("No STIs found for the provided symptoms.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
-            return ResponseEntity.ok(stiResponses); // Return the list of StiResponse
+            response.buildSuccessResponse("STIs found successfully", stiResponses);
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            response.buildFailedResponse(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
 }
-
 
 
 

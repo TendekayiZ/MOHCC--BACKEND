@@ -13,7 +13,5 @@ public class ChangePasswordDTO {
     private String newPassword;
     private String confirmNewPassword;
 
-    // Getters and setters
-    // ... (include getters and setters for all fields)
 }
 

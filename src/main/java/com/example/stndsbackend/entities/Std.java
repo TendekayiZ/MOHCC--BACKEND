@@ -15,12 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Stds")
+@Table(name = "stds")
 public class Std {
     @Id
-    @Column(name = "Name")
     private String name;
-    @Column(name = "Symptoms")
     private String symptoms;
 
 

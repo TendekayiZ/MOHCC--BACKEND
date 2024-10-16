@@ -13,8 +13,5 @@ public interface AuthService {
     boolean changePassword(ChangePasswordDTO changePasswordDTO);
 
 
-//    public interface UserService {
-//        boolean changePassword(ChangePasswordDTO changePasswordDTO);
-//    }
 
 }

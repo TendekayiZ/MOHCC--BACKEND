@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="elohezimhunga">
+        <comment>Create the stds table</comment>
+        <createTable tableName="stds">
+            <column name="Name" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="Symptoms" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="elohezimhunga">
+        <comment>Insert sample data for Std</comment>
+        <insert tableName="stds">
+            <column name="Name" value="Genital herpes"/>
+            <column name="Symptoms" value="Pain or itching around the genetals,small bumps or blisters around the genitals or anus or mouth,Painful ulcers that form when blisters rupture and ooze or bleed.Discharge from the urethra"/>
+        </insert>
+        <insert tableName="stds">
+            <column name="Name" value="Hepatitis"/>
+            <column name="Symptoms" value="Pain or bloating in the belly area,Dark urine and pale or clay-colored stools,Fatigues,Low grade fever,Itching"/>
+        </insert>
+        <insert tableName="stds">
+            <column name="Name" value="Trichomoniasis"/>
+            <column name="Symptoms" value="Itching,burning,Redness or soresness of the genitals"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="3" author="elohezimhunga">
+        <comment>Load Std data from CSV file</comment>
+        <loadData
+                tableName="stds"
+                file="classpath:Symptoms of STI's.csv"
+                separator=","
+                encoding="UTF-8">
+            <column name="Name" type="string"/>
+            <column name="Symptoms" type="string"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

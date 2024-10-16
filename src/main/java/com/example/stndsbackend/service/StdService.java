@@ -9,9 +9,11 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface StdService {
-    boolean hasCsvFormat(MultipartFile file);
-    void processAndSaveData(MultipartFile file);
-    List<Std> csvToStds(InputStream inputStream);
+//    boolean hasCsvFormat(MultipartFile file);
+//    void processAndSaveData(MultipartFile file);
+//    List<Std> csvToStds(InputStream inputStream);
     List<StdResponse> findStdsBySymptoms(List<String> symptoms);
+
     ResponseData<List<Std>> getAllStds();
+//    ResponseData<List<Std>> getAllStds();
 }

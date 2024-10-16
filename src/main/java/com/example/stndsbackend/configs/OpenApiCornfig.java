@@ -1,4 +1,4 @@
-package com.example.stndsbackend.Configs;
+package com.example.stndsbackend.configs;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
