@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class LoginResponse {
-    String message;
-    Boolean Status;
+ private String  username;
+ private Long id;
+ private Boolean Status;
 }

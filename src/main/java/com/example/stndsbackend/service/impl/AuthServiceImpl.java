@@ -42,32 +42,19 @@ public class AuthServiceImpl implements AuthService {
 
 
 
-
-
-
-
     @Override
     public LoginResponse login(LoginDTO loginDTO) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String msg = "";
         Student student = studentRepository.findByUsername(loginDTO.getUsername());
+
         if (student != null) {
-            String password = loginDTO.getPassword();
             if (bcrypt.matches(loginDTO.getPassword(), student.getPassword())) {
-                Optional<Student> studentsOptional = studentRepository.findByUsernameAndPassword(
-                        student.getUsername(), student.getPassword());
-                if (studentsOptional.isPresent()) {
-                    return new LoginResponse("Login Success", true);
-                } else {
-                    return new LoginResponse("Login Failed", true);
-                }
+                return new LoginResponse(student.getUsername(), student.getId(), true);
             } else {
-                return new LoginResponse("password incorrect", false);
+                return new LoginResponse(null, null, false);
             }
         }
-        return new LoginResponse("username does not exist", false);
-
-
+        return new LoginResponse(null, null, false);
     }
 @Override
 public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
